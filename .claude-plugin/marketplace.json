@@ -1,0 +1,14 @@
+{
+  "name": "metabook",
+  "description": "Metabook plugins for Claude Code",
+  "owner": {"name": "Kasibook"},
+  "plugins": [
+    {
+      "name": "metabook",
+      "description": "Build, import and improve flashcard courses in Metabook through its API.",
+      "version": "0.1.0",
+      "source": "./",
+      "author": {"name": "Kasibook"}
+    }
+  ]
+}
