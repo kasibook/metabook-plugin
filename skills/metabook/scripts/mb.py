@@ -52,7 +52,7 @@ def call(method, path, body=None, retries=3):
         req = urllib.request.Request(url, data=data, method=method.upper())
         req.add_header("Authorization", "Bearer " + _key())
         req.add_header("Accept", "application/json")
-        req.add_header("User-Agent", "metabook-plugin/0.1")
+        req.add_header("User-Agent", "metabook-plugin/0.2")
         if data is not None:
             req.add_header("Content-Type", "application/json")
         try:
@@ -116,7 +116,7 @@ LANGS = {"en", "th", "zh", "ja", "ko", "es", "fr", "de", "vi", "other"}
 LEVELS = {"beginner", "intermediate", "advanced"}
 CLOZE = re.compile(r"\{\{c\d+[:：]{1,2}.+?\}\}")
 LATIN_ONLY = re.compile(r"^[A-Za-z0-9\s,.'’!?\-–—/()\"]+$")
-MARKDOWN = re.compile(r"\*\*[^*]+\*\*|^#{1,6}\s|`[^`]+`", re.M)
+UNSUPPORTED_MD = re.compile(r"^\s*\|.*\|\s*$|^\s*```", re.M)
 
 
 def _words(text):
@@ -148,8 +148,8 @@ def lint_module(m, where, deck_type, errors, warnings):
         errors.append(f"{where}: '{f}' is not a field of {t} (see references/modules.md)")
     if t in ("text", "hint") and not str(m.get("content", "")).strip():
         errors.append(f"{where}: empty {t}")
-    if t in ("text", "hint") and MARKDOWN.search(str(m.get("content", ""))):
-        warnings.append(f"{where}: markdown symbols (**, #, `) show literally — write plain text")
+    if t in ("text", "hint") and UNSUPPORTED_MD.search(str(m.get("content", ""))):
+        warnings.append(f"{where}: tables and code blocks aren't rendered (only light markdown) — use lines and bullets")
     if t == "multi_select":
         opts, ok = m.get("options") or [], m.get("correct_answers") or []
         if not ok:
@@ -212,7 +212,6 @@ def lint_course(course):
         if not cards and "deck_id" not in deck:
             warnings.append(f"{dw} ({deck.get('name')}): no cards")
         explained = 0
-        mcq_pos = []
         for ci, card in enumerate(cards):
             cw = f"{dw}.cards[{ci}]"
             for bad in ("front", "back", "explanation", "modules"):
@@ -241,9 +240,6 @@ def lint_course(course):
                 words = _words(" ".join(_module_text(m) for m in mods_all))
                 if words > 300:
                     warnings.append(f"{cw}: note is ~{int(words)} words — split it (keep notes ≤ ~200 words)")
-            for m in mods_all:
-                if m.get("type") == "multi_select" and m.get("correct_answers") and m["correct_answers"][0] in (m.get("options") or []):
-                    mcq_pos.append(m["options"].index(m["correct_answers"][0]))
             if card.get("explanation_content"):
                 explained += 1
             front = json.dumps(card.get("front_content"), sort_keys=True, ensure_ascii=False)
@@ -252,9 +248,6 @@ def lint_course(course):
             fronts.setdefault(front, cw)
             if not card.get("tags"):
                 warnings.append(f"{cw}: no tags")
-        if len(mcq_pos) >= 5 and max(mcq_pos.count(p) for p in set(mcq_pos)) / len(mcq_pos) > 0.6:
-            warnings.append(f"{dw} ({deck.get('name')}): the correct option is in the same position in most questions — "
-                            "options are shown in the order written, so spread it out")
         if dt == "study" and len(cards) >= 5 and explained / len(cards) < 0.3:
             warnings.append(f"{dw} ({deck.get('name')}): only {explained}/{len(cards)} cards explain anything — add explanation_content to tricky ones")
     return errors, warnings
@@ -304,7 +297,7 @@ def cmd_ls(_):
 def _deck_with_cards(deck_id):
     deck = must("GET", f"/decks/{deck_id}")
     cards = must("GET", f"/flashcards?deck_id={deck_id}&limit=500")
-    keep = ("id", "front_content", "back_content", "explanation_content", "tags", "reps", "lapses", "state")
+    keep = ("id", "front_content", "back_content", "explanation_content", "tags", "reps", "lapses", "state", "due", "last_review")
     return {"deck": {k: deck.get(k) for k in ("id", "name", "description", "deck_type", "daily_new_cards",
                                                "daily_reading_goal", "quiz_config", "language", "level",
                                                "collection_id", "card_count")},
@@ -394,7 +387,7 @@ def cmd_push(args):
         deck_id = deck.get("deck_id") or ds.get("deck_id")
         if not deck_id:
             body = {"name": deck["name"], "deck_type": deck.get("deck_type", "study")}
-            for k in ("description", "language", "level", "quiz_config"):
+            for k in ("description", "language", "level", "quiz_config", "daily_new_cards", "daily_reading_goal"):
                 if deck.get(k) is not None:
                     body[k] = deck[k]
             if coll_id:
@@ -403,9 +396,6 @@ def cmd_push(args):
             ds["deck_id"] = deck_id
             save()
             print(f"created {body['deck_type']} deck {deck_id}: {deck['name']}")
-            patch = {k: deck[k] for k in ("daily_new_cards", "daily_reading_goal") if deck.get(k)}
-            if patch:
-                must("PATCH", f"/decks/{deck_id}", patch)
         cards = deck.get("cards") or []
         start = ds.get("done", 0)
         for i in range(start, len(cards), BATCH):

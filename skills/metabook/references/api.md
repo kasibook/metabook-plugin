@@ -18,14 +18,14 @@ JSON in and out. Paths work with or without a trailing slash. Full docs (fetch w
 | `GET /collections` | collections with deck/card counts |
 | `GET /collections/{id}` | one collection + its decks in order |
 | `GET /decks?limit=500` | all decks with `card_count`, `due_count`, `collection_id` |
-| `GET /flashcards?deck_id={id}&limit=500` | a deck's cards (reading/quiz decks in deck order) |
+| `GET /flashcards?deck_id={id}&limit=500` | a deck's cards (reading/quiz decks in deck order), each with `reps`, `lapses`, `state`, `due`, `last_review` |
 | `GET /flashcards?q=text&tags=a` | search |
 
 ## Writing
 | Call | Body / notes |
 |---|---|
 | `POST /collections` | `{name, description?, emoji?, color?, language?, level?}` → 201 |
-| `POST /decks` | `{name, deck_type, description?, language?, level?, collection_id?, quiz_config?}` → 201 |
+| `POST /decks` | `{name, deck_type, description?, language?, level?, collection_id?, quiz_config?, daily_new_cards? (study), daily_reading_goal? (reading)}` → 201 |
 | `PATCH /decks/{id}` | `{daily_new_cards?, daily_reading_goal?, name?, description?, …}` |
 | `POST /collections/{id}/decks` | `{deck_ids: [...]}` — add existing ungrouped decks |
 | `POST /flashcards/batch` | `{cards: [1–100 × {deck_id, front_content, back_content, explanation_content?, tags?}]}` → always 200, per-card `results[{index, success, flashcard_id, errors[{path,msg}]}]` |

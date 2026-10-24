@@ -1,7 +1,7 @@
 {
   "name": "metabook",
   "description": "Build, import and improve flashcard courses in Metabook (meta.kasibook.com): spaced-repetition study decks, scored quizzes and reading notes, written by your agent and pushed through the Metabook API.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {"name": "Kasibook"},
   "homepage": "https://meta.kasibook.com",
   "repository": "https://github.com/kasibook/metabook-plugin",

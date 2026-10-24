@@ -68,9 +68,8 @@ or after the recognition cards.
   otherwise it is display-only and always counts as correct.
 - Write new questions that apply the material (a new sentence, a new problem) instead of copying study cards.
 - Multiple choice: 3–4 options, distractors that reflect real misconceptions, one clearly correct answer
-  (or `allow_multiple: true` and say "choose all that apply"). Options appear in the order written, so spread
-  the correct answer across positions, and keep options a similar length (the longest option shouldn't
-  give the answer away).
+  (or `allow_multiple: true` and say "choose all that apply"). The app shuffles options; keep them a
+  similar length so the longest one doesn't give the answer away.
 - Explain each answer in `explanation_content` — the quiz is also a teaching moment.
 - 10–25 questions per quiz.
 

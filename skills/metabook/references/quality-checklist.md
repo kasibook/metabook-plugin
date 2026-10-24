@@ -21,7 +21,7 @@ Read ~10 cards spread across each deck as the learner would see them.
 - [ ] Every card has topic tags.
 
 ## Format
-- [ ] Plain text only: no `**`, `#`, backticks — use line breaks and `• ` bullets.
+- [ ] Markdown kept light: **bold** for key terms, bullets, headings — no tables or code blocks.
 - [ ] Speech modules use a supported language and the native script.
 - [ ] Reading notes ≤ ~200 words; long topics split.
 - [ ] Multiple choice: 3–4 plausible options, correct answers copied exactly from the options.
@@ -32,4 +32,3 @@ Read ~10 cards spread across each deck as the learner would see them.
 - Romanised text sent to a Japanese/Chinese/Thai voice → nonsense audio.
 - A quiz that repeats the study cards word-for-word → tests memory of the card, not the skill.
 - 40 new cards/day per deck × 5 decks → a review backlog of hundreds within a week.
-- Markdown in text modules → asterisks and hashes shown on the card.

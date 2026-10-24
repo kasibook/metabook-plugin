@@ -8,7 +8,7 @@ Full reference (always current): https://meta.kasibook.com/api/docs/features/MOD
 
 | Module | Example | Notes |
 |---|---|---|
-| text | `{"type":"text","content":"The capital of France"}` | Plain text, line breaks kept, ≤10 000 chars. No markdown. |
+| text | `{"type":"text","content":"The capital of France"}` | Line breaks kept, ≤10 000 chars. Light markdown: `**bold**`, `*italic*`, `# heading` (1–3 #), `- item`, `` `code` ``, `[link](https://…)`. No tables/code blocks. Also in `hint` and explanations. |
 | tts | `{"type":"tts","text":"ありがとう","lang":"ja","autoplay":false,"show_text":true,"rate":0.9}` | Read aloud by the device. `lang`: `en-US`, `ja`, `zh-CN`, `th-TH` only. `text` must be in that language's script. `show_text:false` + `autoplay:true` = a listening prompt. |
 | hint | `{"type":"hint","content":"Think of the verb tense"}` | Collapsed "Show hint" button. A nudge, never the answer. |
 | image / audio | `{"type":"image","media":{"id":"<uuid>"},"alt":"…"}` | Upload first (`POST /api/uploads/`, multipart `file`) — no external URLs. |
@@ -19,7 +19,7 @@ Full reference (always current): https://meta.kasibook.com/api/docs/features/MOD
 | Module | Example | Notes |
 |---|---|---|
 | text_input | `{"type":"text_input","correct_answer":"たべる","accepted_answers":["taberu"],"placeholder":"Type the reading"}` | Comparison ignores case, punctuation, apostrophe style and spaces. `accepted_answers` (≤10) also count: romaji next to kana, synonyms, British/US spelling. Put the question in a `text` module before it. |
-| multi_select | `{"type":"multi_select","options":["Paris","Lyon","Nice"],"correct_answers":["Paris"],"allow_multiple":false}` | `correct_answers` repeat option **texts** exactly. 3–4 plausible options. The app shows options in the order you give them — vary where the correct one sits (not always first), and avoid "all of the above". |
+| multi_select | `{"type":"multi_select","options":["Paris","Lyon","Nice"],"correct_answers":["Paris"],"allow_multiple":false}` | `correct_answers` repeat option **texts** exactly. 3–4 plausible options. The app shuffles the options ("all/none of the above" stays last), so their written order doesn't matter. |
 | cloze | `{"type":"cloze","text":"Water boils at {{c1::100}} °C at {{c2::sea level}}."}` | Double colon. Hints: `{{c1::answer::hint}}`. Only the exact blank text counts (case/punctuation-insensitive) — when learners might type an alternative (romaji, a synonym), use `text_input` with `accepted_answers` instead. |
 | true_false | `{"type":"true_false","statement":"Spiders are insects.","correct":false}` | Explain why on the back. |
 | matching | `{"type":"matching","pairs":[{"left":"dog","right":"犬"},{"left":"cat","right":"猫"}]}` | 3–6 pairs; the app shuffles. |

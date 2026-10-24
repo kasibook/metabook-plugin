@@ -94,6 +94,8 @@ the app schedules reviews from there."
 2. Audit against `references/quality-checklist.md` and `references/course-design.md`. Lead with the few
    problems that hurt learning most (wrong content, missing explanations, one-directional cards, a backlog
    too big to ever clear), with counts and 2–3 concrete examples each — not a list of everything.
+   Exported cards carry their review history: high `lapses` = cards the learner keeps forgetting — fix those
+   first (clearer prompt, example, explanation, or split into smaller cards).
 3. Propose the changes and get a yes. Cards with `reps > 0` have review history: edit them in place
    (PATCH keeps their schedule) rather than deleting and re-creating, and keep what they test.
 4. Apply with `mb.py update changes.json` (format in `references/course-format.md`). Never delete cards
@@ -106,7 +108,7 @@ the app schedules reviews from there."
 - **Accuracy over volume.** A wrong card gets memorised. If you are not sure of a fact, reading or translation, leave it out or flag it.
 - Speech (`tts`, `speak`, `dictation`) supports only `en-US`, `ja`, `zh-CN` and `th-TH`. For other languages
   use `text` modules (and say so to the user).
-- Text modules render as **plain text** with line breaks: no markdown (`**bold**`, `# headings` show literally).
-  Use line breaks, short lines and `• ` bullets instead.
+- Text keeps its line breaks and renders **light markdown**: `**bold**` (use it for the key term), `*italic*`,
+  `# heading` lines, `- ` bullets, `` `code` ``, links. No tables or code blocks — they show as raw symbols.
 - Big pushes are fine (thousands of cards) but go deck by deck and check the first batch in the app before the rest.
 - `mb.py api` prints `{"status": …, "body": …}`; read `body` for the response.
