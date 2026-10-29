@@ -8,7 +8,7 @@ Full reference (always current): https://meta.kasibook.com/api/docs/features/MOD
 
 | Module | Example | Notes |
 |---|---|---|
-| text | `{"type":"text","content":"The capital of France"}` | Line breaks kept, ≤10 000 chars. Light markdown: `**bold**`, `*italic*`, `# heading` (1–3 #), `- item`, `` `code` ``, `[link](https://…)`. No tables/code blocks. Also in `hint` and explanations. |
+| text | `{"type":"text","content":"The capital of France"}` | Line breaks kept, ≤10 000 chars. Markdown: `**bold**`, `*italic*`, `# heading`, `- item`, `1. item`, `> quote`, `` `code` ``, `[link](https://…)`, fenced ``` code blocks, `\| tables \|` with a `\|---\|` row. Also in `hint` and explanations; inline formatting also in cloze/true_false/multi_select/matching/ordering text. |
 | tts | `{"type":"tts","text":"ありがとう","lang":"ja","autoplay":false,"show_text":true,"rate":0.9}` | Read aloud by the device. `lang`: `en-US`, `ja`, `zh-CN`, `th-TH` only. `text` must be in that language's script. `show_text:false` + `autoplay:true` = a listening prompt. |
 | hint | `{"type":"hint","content":"Think of the verb tense"}` | Collapsed "Show hint" button. A nudge, never the answer. |
 | image / audio | `{"type":"image","media":{"id":"<uuid>"},"alt":"…"}` | Upload first (`POST /api/uploads/`, multipart `file`) — no external URLs. |

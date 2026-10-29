@@ -108,7 +108,8 @@ the app schedules reviews from there."
 - **Accuracy over volume.** A wrong card gets memorised. If you are not sure of a fact, reading or translation, leave it out or flag it.
 - Speech (`tts`, `speak`, `dictation`) supports only `en-US`, `ja`, `zh-CN` and `th-TH`. For other languages
   use `text` modules (and say so to the user).
-- Text keeps its line breaks and renders **light markdown**: `**bold**` (use it for the key term), `*italic*`,
-  `# heading` lines, `- ` bullets, `` `code` ``, links. No tables or code blocks — they show as raw symbols.
+- Text keeps its line breaks and renders markdown: `**bold**` (use it for the key term), `*italic*`, `# heading`,
+  `- ` bullets, `1.` items, `> quote`, `` `code` ``, links, fenced ``` code blocks and `| tables |` (with a `|---|` row).
+  Keep it phone-friendly: short code blocks and narrow tables (both scroll sideways on small screens).
 - Big pushes are fine (thousands of cards) but go deck by deck and check the first batch in the app before the rest.
 - `mb.py api` prints `{"status": …, "body": …}`; read `body` for the response.

@@ -21,7 +21,7 @@ Read ~10 cards spread across each deck as the learner would see them.
 - [ ] Every card has topic tags.
 
 ## Format
-- [ ] Markdown kept light: **bold** for key terms, bullets, headings — no tables or code blocks.
+- [ ] Markdown used for structure, not decoration: **bold** for key terms, bullets, short code blocks, narrow tables.
 - [ ] Speech modules use a supported language and the native script.
 - [ ] Reading notes ≤ ~200 words; long topics split.
 - [ ] Multiple choice: 3–4 plausible options, correct answers copied exactly from the options.

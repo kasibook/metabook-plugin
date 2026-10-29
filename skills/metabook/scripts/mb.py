@@ -52,7 +52,7 @@ def call(method, path, body=None, retries=3):
         req = urllib.request.Request(url, data=data, method=method.upper())
         req.add_header("Authorization", "Bearer " + _key())
         req.add_header("Accept", "application/json")
-        req.add_header("User-Agent", "metabook-plugin/0.2")
+        req.add_header("User-Agent", "metabook-plugin/0.2.1")
         if data is not None:
             req.add_header("Content-Type", "application/json")
         try:
@@ -116,7 +116,6 @@ LANGS = {"en", "th", "zh", "ja", "ko", "es", "fr", "de", "vi", "other"}
 LEVELS = {"beginner", "intermediate", "advanced"}
 CLOZE = re.compile(r"\{\{c\d+[:：]{1,2}.+?\}\}")
 LATIN_ONLY = re.compile(r"^[A-Za-z0-9\s,.'’!?\-–—/()\"]+$")
-UNSUPPORTED_MD = re.compile(r"^\s*\|.*\|\s*$|^\s*```", re.M)
 
 
 def _words(text):
@@ -148,8 +147,6 @@ def lint_module(m, where, deck_type, errors, warnings):
         errors.append(f"{where}: '{f}' is not a field of {t} (see references/modules.md)")
     if t in ("text", "hint") and not str(m.get("content", "")).strip():
         errors.append(f"{where}: empty {t}")
-    if t in ("text", "hint") and UNSUPPORTED_MD.search(str(m.get("content", ""))):
-        warnings.append(f"{where}: tables and code blocks aren't rendered (only light markdown) — use lines and bullets")
     if t == "multi_select":
         opts, ok = m.get("options") or [], m.get("correct_answers") or []
         if not ok:
