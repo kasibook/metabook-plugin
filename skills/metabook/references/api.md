@@ -34,7 +34,7 @@ JSON in and out. Paths work with or without a trailing slash. Full docs (fetch w
 | `POST /collections/{id}/share` | `{is_public, allow_copy}` → `share_token`; link `https://meta.kasibook.com/shared/collection/{token}` |
 
 ## Errors
-- 401 bad/expired key · 403 key lacks a permission · 404 not found or not yours · 422 invalid (read `detail[].path` and `msg` — it names the fix) · 429 slow down (honour `Retry-After`; `mb.py` retries automatically).
+- 401 bad/expired key · 403 key lacks a permission, or `code: "quota_exceeded"` = an account limit (50k cards, 2k decks, 500 collections, 1 GB uploads; nothing from that request was saved) · 404 not found or not yours · 422 invalid (read `detail[].path` and `msg` — it names the fix) · 429 slow down: 600 changes/min and 30 AI calls/min (honour `Retry-After`; `mb.py` retries automatically; one batch call counts once, so prefer batches).
 
 ## Studying from the agent (rarely needed — the app does this better)
 - Due cards: `GET /reviews/due?deck_id=` → show front, collect recall, `POST /reviews/submit {flashcard_id, rating 1–4, expected_reps, client_review_id}`.
